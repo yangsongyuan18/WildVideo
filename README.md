@@ -2,6 +2,10 @@
 
 ## Overview
 
+<div align="center">
+    <img src="./images/Task_definition.png" alt="Figure 1" width="100%">
+</div>
+
 ildVideo is an open-world benchmark dataset designed to address how to assess hallucination of Large Multi-modal Models (LMMs) for understanding video-language interaction in the wild. 
 
 ### 1)  Multi-level, multi-aspect task design
