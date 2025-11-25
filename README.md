@@ -3,7 +3,7 @@
 ## Overview
 
 <p align="center">
-  <img src="images/Task_definition.png" alt="WildVideo overview" width="60%">
+  <img src="images/Task_definition.png" alt="WildVideo overview" width="100%">
 </p>
 
 ildVideo is an open-world benchmark dataset designed to address how to assess hallucination of Large Multi-modal Models (LMMs) for understanding video-language interaction in the wild. 
