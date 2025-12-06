@@ -1,0 +1,35 @@
+dataset_path: yangsongyuan18/wildvideo
+
+dataset_name: single_en                   
+
+dataset_kwargs:
+  token: True
+  video: True
+  cache_dir: /mnt/Data/DATA/huggingface/wildvideo_cache 
+
+task: "wildvideo_single_en"
+test_split: test
+
+output_type: generate_until
+
+doc_to_visual: !function single_en_utils.wildvideo_doc_to_visual
+doc_to_text:   !function single_en_utils.wildvideo_single_en_doc_to_text
+doc_to_target: "answer"
+
+generation_kwargs:
+  max_new_tokens: 64
+  temperature: 0
+  top_p: 1.0
+  num_beams: 1
+  do_sample: false
+
+process_results: !function single_en_utils.wildvideo_single_en_process_results
+
+metric_list:
+  - metric: wildvideo_single_en_acc
+    aggregation: !function single_en_utils.wildvideo_single_en_aggregate
+    higher_is_better: true
+
+metadata:
+  sys_prompt: "There are several options:"
+  judge_model_name: "gpt-4o-mini"
