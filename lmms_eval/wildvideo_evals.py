@@ -72,9 +72,6 @@ Do not output anything else.
             raise RuntimeError(f"Bad response format from judge model: {out}") from e
 
     def _call_judge_model_with_retry(self, prompt: str, maxtry: int = 2) -> str:
-        """
-        轻量级 retry：最多试几次，不成功就交给外层 eval_result 去记为 failed。
-        """
         last_err: Exception | None = None
 
         for i in range(maxtry):
