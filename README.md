@@ -73,3 +73,14 @@ accelerate launch --num_processes=4 \
     --log_samples_suffix llava_vid \
     --output_path ./logs/
 ```
+
+## Citation
+
+```shell
+@inproceedings{yang2025wildvideo,
+  author    = {Yang, Songyuan and Yu, Weijiang and Yang, Wenjing and Liu, Xinwang and Tan, Huibin and Lan, Long and Xiao, Nong},
+  title     = {WildVideo: Benchmarking LMMs for Understanding Video-Language Interaction},
+  booktitle ={Institute of Electrical and Electronics Engineers (IEEE)},
+  year      = {2025}
+  note      = {We thank Jilin Ma for for developing the project website and GitHub infrastructure.}
+}
