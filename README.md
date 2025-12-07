@@ -82,5 +82,5 @@ accelerate launch --num_processes=4 \
   title     = {WildVideo: Benchmarking LMMs for Understanding Video-Language Interaction},
   booktitle ={Institute of Electrical and Electronics Engineers (IEEE)},
   year      = {2025}
-  note      = {We thank Jilin Ma for for developing the project website and GitHub infrastructure.}
+  note      = {We thank Jilin Ma for developing the project website and GitHub infrastructure.}
 }
