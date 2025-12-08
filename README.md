@@ -1,5 +1,11 @@
 # WildVideo: Benchmarking LMMs for Understanding Video-Language Interaction
 
+<p align="center">
+  <a href="https://chandler172857.github.io/WildVideo-leaderboard/"><img src="https://img.shields.io/badge/🎓-Website-red" height="23"></a>
+  <a href="https://ieeexplore.ieee.org/document/11097075"><img src="https://img.shields.io/badge/📝-Paper-blue" height="23"></a>
+  <a href="https://huggingface.co/datasets/yangsongyuan18/wildvideo"><img src="https://img.shields.io/badge/🤗-Dataset-yellow" height="23"></a>
+</p>
+
 ## Overview
 
 <p align="center">
