@@ -86,7 +86,7 @@ accelerate launch --num_processes=4 \
 @inproceedings{yang2025wildvideo,
   author    = {Yang, Songyuan and Yu, Weijiang and Yang, Wenjing and Liu, Xinwang and Tan, Huibin and Lan, Long and Xiao, Nong},
   title     = {WildVideo: Benchmarking LMMs for Understanding Video-Language Interaction},
-  booktitle ={Institute of Electrical and Electronics Engineers (IEEE)},
+  booktitle ={IEEE Transactions on Pattern Analysis and Machine Intelligence (PAMI)},
   year      = {2025}
   note      = {We thank Jilin Ma for developing the project website and GitHub infrastructure.}
 }
