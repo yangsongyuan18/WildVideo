@@ -49,6 +49,26 @@ git clone https://github.com/LLaVA-VL/LLaVA-NeXT
 cd LLaVA-NeXT
 pip install -e .
 ```
+
+Put the code from lmms_eval into the tasks folder under the framework.
+```
+lmms-eval/
+└── lmms_eval/
+    └── tasks/
+        └── wildvideo/
+            ├── __init__.py
+            ├── wildvideo_evals.py     
+            │
+            ├── wildvideo_single_en.yaml    
+            ├── wildvideo_single_cn.yaml   
+            ├── wildvideo_multi_en.yaml   
+            ├── wildvideo_multi_cn.yaml 
+            │
+            ├── single_en_utils.py 
+            ├── single_cn_utils.py
+            ├── multi_en_utils.py  
+            └── multi_cn_utils.py 
+```
 ### Evaluation
 
 We use [LLaVA-Video-7B-Qwen2](https://huggingface.co/lmms-lab/LLaVA-Video-7B-Qwen2) as an example in the following commands. You can change `--model`, and `--model_args` based on your requirement.
