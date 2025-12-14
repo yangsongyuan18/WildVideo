@@ -90,6 +90,12 @@ def _build_multiturn_prompt_en(rounds: List[Dict[str, Any]]) -> str:
 
 
 def wildvideo_multi_en_doc_to_text(doc: Dict[str, Any]) -> str:
+    """
+    多轮版 doc_to_text：
+    - 优先读取 doc['rounds']
+    - 用 _build_multiturn_prompt_en 拼 prompt
+    - 如果没有 rounds，就退化成单轮样式
+    """
     rounds = doc.get("rounds") or []
 
     if rounds:
@@ -103,8 +109,13 @@ def wildvideo_multi_en_doc_to_text(doc: Dict[str, Any]) -> str:
     )
     return prompt
 
-def wildvideo_multi_en_doc_to_target(doc: Dict[str, Any]) -> str:
 
+# 如果你想让 doc_to_target 也能自动从最后一轮取 answer，可以加这个：
+def wildvideo_multi_en_doc_to_target(doc: Dict[str, Any]) -> str:
+    """
+    多轮的“标准答案”：默认用最后一轮的 answer。
+    方便在 YAML 里写：doc_to_target: !function multi_en_utils.wildvideo_multi_en_doc_to_target
+    """
     if "answer" in doc and doc["answer"]:
         return str(doc["answer"])
 
@@ -131,11 +142,15 @@ def wildvideo_multi_en_process_results(doc: Dict[str, Any], results: List[str]) 
     if rounds:
         rounds_sorted = sorted(rounds, key=lambda r: r.get("round", 0))
         last = rounds_sorted[-1]
-        final_question = last.get("question", "")
-        gold_answer = last.get("answer", "")
+
+        final_question = last.get("question", doc.get("question", ""))
+        gold_answer = last.get("answer", doc.get("answer", ""))
+
+        q_type = last.get("type", doc.get("type", "Unknown"))
     else:
         final_question = doc.get("question", "")
         gold_answer = doc.get("answer", "")
+        q_type = doc.get("type", "Unknown")
 
     judge_input = {
         "video_id": doc.get("video_id"),
@@ -144,8 +159,7 @@ def wildvideo_multi_en_process_results(doc: Dict[str, Any], results: List[str]) 
         "prediction": pred,
         "lang": doc.get("lang", "en"),
         "turn_type": doc.get("turn_type", "multi"),
-        "type": doc.get("type", None),
-
+        "type": q_type,
     }
 
     return {"wildvideo_multi_en_acc": judge_input}
