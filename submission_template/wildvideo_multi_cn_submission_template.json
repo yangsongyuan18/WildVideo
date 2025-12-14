@@ -3,10 +3,10 @@
   "split": "test",
   "lang": "cn",
   "model_info": {
-    "model_name": "YOUR_MODEL_NAME_HERE",
-    "model_size": "YOUR_MODEL_SIZE",
-    "vision_encoder": "YOUR_VISION_ENCODER",
-    "notes": "multi-turn setting; 请注明多轮历史拼接方式等实现细节"
+    "model_name": "LLaVA-Video-7B-Qwen2",
+    "model_size": "7B",
+    "vision_encoder": "siglip-so400m-patch14-384",
+    "notes": "max_frames_num=64, conv_template=qwen_1_5, mm_spatial_pool_mode=average"
   },
   "judge_info": {
     "judge_type": "LLM-as-a-judge",
@@ -17,57 +17,71 @@
   "metric": {
     "name": "wildvideo_multi_cn_acc",
     "value": 0.0,
-    "description": "基于 LLM 判分的 WildVideo 多轮中文测试集准确率（0~1）。"
+    "description": "Average judge score in [0,1] on WildVideo multi-turn Chinese test split."
   },
   "extra_stats": {
-    "total_judged": 0,
-    "correct_judged": 0,
+    "total_judged": 100,
+    "sum_score": 0.0,
     "failed_judged": 0,
     "acc_raw": 0.0,
     "per_type_acc": {
-      "World Knowledge": 0.0,
-      "Object": 0.0,
-      "Visual Localization": 0.0,
-      "Consistency": 0.0,
-      "Action": 0.0,
       "MultiModal Reference": 0.0,
-      "Causality": 0.0
+      "Visual Localization": 0.0,
+      "Object": 0.0,
+      "Causality": 0.0,
+      "Consistency": 0.0,
+      "Contextual Ellipsis": 0.0,
+      "Action": 0.0,
+      "Cross-turn Retrieval": 0.0
     },
     "per_type_detail": {
-      "World Knowledge": {
-        "total": 0,
-        "correct": 0,
-        "failed": 0
-      },
-      "Object": {
-        "total": 0,
-        "correct": 0,
-        "failed": 0
+      "MultiModal Reference": {
+        "total": 17,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
       },
       "Visual Localization": {
-        "total": 0,
-        "correct": 0,
-        "failed": 0
+        "total": 10,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
       },
-      "Consistency": {
-        "total": 0,
-        "correct": 0,
-        "failed": 0
-      },
-      "Action": {
-        "total": 0,
-        "correct": 0,
-        "failed": 0
-      },
-      "MultiModal Reference": {
-        "total": 0,
-        "correct": 0,
-        "failed": 0
+      "Object": {
+        "total": 17,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
       },
       "Causality": {
-        "total": 0,
-        "correct": 0,
-        "failed": 0
+        "total": 13,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
+      },
+      "Consistency": {
+        "total": 9,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
+      },
+      "Contextual Ellipsis": {
+        "total": 17,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
+      },
+      "Action": {
+        "total": 13,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
+      },
+      "Cross-turn Retrieval": {
+        "total": 4,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
       }
     }
   },
