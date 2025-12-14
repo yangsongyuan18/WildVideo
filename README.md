@@ -110,3 +110,29 @@ accelerate launch --num_processes=4 \
   year      = {2025}
   note      = {We thank Jilin Ma for developing the project website and GitHub infrastructure.}
 }
+```
+
+## WildVideo Leaderboard Submissions
+
+
+### 1. Evaluation setup  
+
+All submissions must follow these rules:
+
+- **Dataset:** WildVideo (official splits: `single_en`, `single_cn`, `multi_en`, `multi_cn`).
+- **Evaluation framework:** `lmms_eval`.
+- **Prediction model:** any video–language model (please describe it in `model_info`).
+- **Scoring:** LLM-as-a-judge accuracy using our WildVideo evaluation prompt.
+
+Please do **not** modify the WildVideo data itself when reporting results.
+### 2. Result JSON format 
+
+We accept **one JSON file per task**.  
+You can find templates under `submission_template/`, for example:
+
+- `submission_template/wildvideo_single_en_template.json`
+- `submission_template/wildvideo_multi_en_template.json`
+- `submission_template/wildvideo_single_en_template.json`
+- `submission_template/wildvideo_multi_en_template.json`
+
+A typical submission file looks like submission_template.json
