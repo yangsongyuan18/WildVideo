@@ -100,17 +100,6 @@ accelerate launch --num_processes=4 \
     --output_path ./logs/
 ```
 
-## Citation
-
-```shell
-@inproceedings{yang2025wildvideo,
-  author    = {Yang, Songyuan and Yu, Weijiang and Yang, Wenjing and Liu, Xinwang and Tan, Huibin and Lan, Long and Xiao, Nong},
-  title     = {WildVideo: Benchmarking LMMs for Understanding Video-Language Interaction},
-  booktitle ={IEEE Transactions on Pattern Analysis and Machine Intelligence (PAMI)},
-  year      = {2025}
-  note      = {We thank Jilin Ma for developing the project website and GitHub infrastructure.}
-}
-```
 
 ## WildVideo Leaderboard Submissions
 
@@ -132,7 +121,19 @@ You can find templates under `submission_template/`, for example:
 
 - `submission_template/wildvideo_single_en_template.json`
 - `submission_template/wildvideo_multi_en_template.json`
-- `submission_template/wildvideo_single_en_template.json`
-- `submission_template/wildvideo_multi_en_template.json`
+- `submission_template/wildvideo_single_cn_template.json`
+- `submission_template/wildvideo_multi_cn_template.json`
 
-A typical submission file looks like submission_template.json
+
+## Citation
+
+```shell
+@inproceedings{yang2025wildvideo,
+  author    = {Yang, Songyuan and Yu, Weijiang and Yang, Wenjing and Liu, Xinwang and Tan, Huibin and Lan, Long and Xiao, Nong},
+  title     = {WildVideo: Benchmarking LMMs for Understanding Video-Language Interaction},
+  booktitle ={IEEE Transactions on Pattern Analysis and Machine Intelligence (PAMI)},
+  year      = {2025}
+  note      = {We thank Jilin Ma for developing the project website and GitHub infrastructure.}
+}
+```
+
