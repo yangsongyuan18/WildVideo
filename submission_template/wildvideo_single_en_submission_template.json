@@ -3,9 +3,9 @@
   "split": "test",
   "lang": "en",
   "model_info": {
-    "model_name": "YOUR_MODEL_NAME_HERE",
-    "model_size": "YOUR_MODEL_SIZE",
-    "vision_encoder": "YOUR_VISION_ENCODER",
+    "model_name": "LLaVA-Video-7B-Qwen2",
+    "model_size": "7B",
+    "vision_encoder": "siglip-so400m-patch14-384",
     "notes": "max_frames_num=64, conv_template=qwen_1_5, mm_spatial_pool_mode=average"
   },
   "judge_info": {
@@ -17,11 +17,11 @@
   "metric": {
     "name": "wildvideo_single_en_acc",
     "value": 0.0,
-    "description": "Accuracy judged by LLM on WildVideo single-turn English test split (0~1)."
+    "description": "Average judge score in [0,1] on WildVideo single-turn English test split."
   },
   "extra_stats": {
-    "total_judged": 0,
-    "correct_judged": 0,
+    "total_judged": 100,
+    "sum_score": 0.0,
     "failed_judged": 0,
     "acc_raw": 0.0,
     "per_type_acc": {
@@ -35,39 +35,46 @@
     },
     "per_type_detail": {
       "World Knowledge": {
-        "total": 0,
-        "correct": 0,
-        "failed": 0
+        "total": 40,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
       },
       "Object": {
-        "total": 0,
-        "correct": 0,
-        "failed": 0
+        "total": 15,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
       },
       "Visual Localization": {
-        "total": 0,
-        "correct": 0,
-        "failed": 0
+        "total": 10,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
       },
       "Consistency": {
-        "total": 0,
-        "correct": 0,
-        "failed": 0
+        "total": 8,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
       },
       "Action": {
-        "total": 0,
-        "correct": 0,
-        "failed": 0
+        "total": 7,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
       },
       "MultiModal Reference": {
-        "total": 0,
-        "correct": 0,
-        "failed": 0
+        "total": 10,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
       },
       "Causality": {
-        "total": 0,
-        "correct": 0,
-        "failed": 0
+        "total": 10,
+        "failed": 0,
+        "avg_score": 0.0,
+        "sum_score": 0.0
       }
     }
   },
