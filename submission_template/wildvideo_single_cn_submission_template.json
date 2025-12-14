@@ -2,36 +2,77 @@
   "task": "wildvideo_single_cn",
   "split": "test",
   "lang": "cn",
-
   "model_info": {
-    "model_name": "YOUR_MODEL_NAME",
-    "model_size": "7B",
+    "model_name": "YOUR_MODEL_NAME_HERE",
+    "model_size": "YOUR_MODEL_SIZE",
     "vision_encoder": "YOUR_VISION_ENCODER",
-    "notes": "中文单轮设置，例如 max_frames_num=64, 特定中文 prompt 等"
+    "notes": "max_frames_num=64, conv_template=qwen_1_5, mm_spatial_pool_mode=average"
   },
-
   "judge_info": {
     "judge_type": "LLM-as-a-judge",
-    "judge_model_name": "API_NAME",
+    "judge_model_name": "MODEL_NAME",
     "sys_prompt_version": "v1.0",
-    "api_provider": "openai-or-proxy-name"
+    "api_provider": "openai"
   },
-
   "metric": {
     "name": "wildvideo_single_cn_acc",
-    "value": 0.0000,
-    "description": "Accuracy judged by LLM on WildVideo single-turn Chinese test split (0~1)."
+    "value": 0.0,
+    "description": "基于 LLM 判分的 WildVideo 单轮中文测试集准确率（0~1）。"
   },
-
   "extra_stats": {
-    "total_judged": X,
-    "correct_judged": X,
-    "failed_judged": X,
-    "acc_raw": X
+    "total_judged": 0,
+    "correct_judged": 0,
+    "failed_judged": 0,
+    "acc_raw": 0.0,
+    "per_type_acc": {
+      "World Knowledge": 0.0,
+      "Object": 0.0,
+      "Visual Localization": 0.0,
+      "Consistency": 0.0,
+      "Action": 0.0,
+      "MultiModal Reference": 0.0,
+      "Causality": 0.0
+    },
+    "per_type_detail": {
+      "World Knowledge": {
+        "total": 0,
+        "correct": 0,
+        "failed": 0
+      },
+      "Object": {
+        "total": 0,
+        "correct": 0,
+        "failed": 0
+      },
+      "Visual Localization": {
+        "total": 0,
+        "correct": 0,
+        "failed": 0
+      },
+      "Consistency": {
+        "total": 0,
+        "correct": 0,
+        "failed": 0
+      },
+      "Action": {
+        "total": 0,
+        "correct": 0,
+        "failed": 0
+      },
+      "MultiModal Reference": {
+        "total": 0,
+        "correct": 0,
+        "failed": 0
+      },
+      "Causality": {
+        "total": 0,
+        "correct": 0,
+        "failed": 0
+      }
+    }
   },
-
   "run_meta": {
-    "date": "YYYY-MM-DD",
+    "date": "2025-12-05",
     "author": "your_name_here",
     "codebase": "lmms_eval",
     "wildvideo_version": "v1.0"
