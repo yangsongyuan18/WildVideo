@@ -1,0 +1,39 @@
+{
+  "task": "wildvideo_multi_en",
+  "split": "test",
+  "lang": "en",
+
+  "model_info": {
+    "model_name": "YOUR_MODEL_NAME",
+    "model_size": "7B",
+    "vision_encoder": "YOUR_VISION_ENCODER",
+    "notes": "multi-turn setting, e.g., max_history_turns=3, max_frames_num=64"
+  },
+
+  "judge_info": {
+    "judge_type": "LLM-as-a-judge",
+    "judge_model_name": "API_NAME",
+    "sys_prompt_version": "v1.0",
+    "api_provider": "openai-or-proxy-name"
+  },
+
+  "metric": {
+    "name": "wildvideo_multi_en_acc",
+    "value": 0.0000,
+    "description": "Accuracy judged by LLM on WildVideo multi-turn English test split (0~1)."
+  },
+
+  "extra_stats": {
+    "total_judged": X,
+    "correct_judged": X,
+    "failed_judged": X,
+    "acc_raw": X
+  },
+
+  "run_meta": {
+    "date": "YYYY-MM-DD",
+    "author": "your_name_here",
+    "codebase": "lmms_eval",
+    "wildvideo_version": "v1.0"
+  }
+}
