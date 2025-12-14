@@ -1,0 +1,39 @@
+{
+  "task": "wildvideo_single_en",
+  "split": "test",
+  "lang": "en",
+
+  "model_info": {
+    "model_name": "LLaVA-Video-7B-Qwen2",
+    "model_size": "7B",
+    "vision_encoder": "siglip-so400m-patch14-384",
+    "notes": "max_frames_num=64, conv_template=qwen_1_5, mm_spatial_pool_mode=average"
+  },
+
+  "judge_info": {
+    "judge_type": "LLM-as-a-judge",
+    "judge_model_name": "gpt-4o-mini",
+    "sys_prompt_version": "v1.0",
+    "api_provider": "xiaoai.plus"
+  },
+
+  "metric": {
+    "name": "wildvideo_single_en_acc",
+    "value": 0.44763920309421296,
+    "description": "Accuracy judged by LLM on WildVideo single-turn English test split (0~1)."
+  },
+
+  "extra_stats": {
+    "total_judged": 13703,
+    "correct_judged": 6134,
+    "failed_judged": 31,
+    "acc_raw": 0.44763920309421296
+  },
+
+  "run_meta": {
+    "date": "2025-12-05",
+    "author": "your_name_here",
+    "codebase": "lmms_eval",
+    "wildvideo_version": "v1.0"
+  }
+}
