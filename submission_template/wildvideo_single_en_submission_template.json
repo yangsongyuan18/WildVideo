@@ -19,15 +19,15 @@
 
   "metric": {
     "name": "wildvideo_single_en_acc",
-    "value": 0.44763920309421296,
+    "value": X,
     "description": "Accuracy judged by LLM on WildVideo single-turn English test split (0~1)."
   },
 
   "extra_stats": {
-    "total_judged": 13703,
-    "correct_judged": 6134,
-    "failed_judged": 31,
-    "acc_raw": 0.44763920309421296
+    "total_judged": X,
+    "correct_judged": X,
+    "failed_judged": X,
+    "acc_raw": X
   },
 
   "run_meta": {
