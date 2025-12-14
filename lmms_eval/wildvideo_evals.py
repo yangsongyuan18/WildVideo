@@ -21,17 +21,18 @@ class WildVideoEvaluator:
         pred = item.get("prediction", "")
 
         base_prompt = """
-You will receive a video question, the ground-truth answer, and the prediction
-from a video question answering model.
-Your task is to decide whether the prediction can be regarded as correct,
-based on the question and the ground-truth answer.
+    You will receive a video question, the ground-truth answer, and the prediction
+    from a video question answering model.
+    Your task is to give a **score between 0 and 1** to indicate how correct the prediction is.
 
-Consider semantic equivalence and factual consistency.
-Minor wording differences are allowed.
-If the prediction is correct, respond with exactly "Correct".
-If the prediction is incorrect, respond with exactly "Incorrect".
-Do not output anything else.
-""".strip()
+    - 1.0 means completely correct.
+    - 0.0 means totally wrong.
+    - Values in between (e.g., 0.3, 0.5, 0.8) mean partially correct.
+
+    Important:
+    - Only output a single NUMBER between 0 and 1 (inclusive), with at most 2 decimal places.
+    - Do NOT output any other words or explanation.
+    """.strip()
 
         q_part = f"Question:\n{question}\n\n" if question else ""
         prompt = (
@@ -60,8 +61,8 @@ Do not output anything else.
         resp = requests.post(
             self.api_url,
             headers=headers,
-            json=data,
-            timeout=30,
+            json=data,      
+            timeout=30,     
         )
         resp.raise_for_status()
 
@@ -72,6 +73,9 @@ Do not output anything else.
             raise RuntimeError(f"Bad response format from judge model: {out}") from e
 
     def _call_judge_model_with_retry(self, prompt: str, maxtry: int = 2) -> str:
+        """
+        轻量级 retry：最多试几次，不成功就交给外层 eval_result 去记为 failed。
+        """
         last_err: Exception | None = None
 
         for i in range(maxtry):
@@ -87,29 +91,60 @@ Do not output anything else.
         raise RuntimeError(f"Judge model failed after {maxtry} tries: {last_err}")
 
     @staticmethod
-    def _output_to_score(text: str) -> int:
+    def _output_to_score(text: str) -> float:
+        """
+        把判分模型的输出转成 0~1 区间的小数分数。
+        约定：优先认为输出是一个数字（如 "0.8"），
+        实在不是数字就 fallback 成 0 或 1 简单判断。
+        """
         t = text.strip()
-        if t.startswith("Correct"):
-            return 1
-        if t.startswith("Incorrect"):
-            return 0
-        if ("Correct" in t) and ("Incorrect" not in t):
-            return 1
-        if "Incorrect" in t:
-            return 0
-        return 0
+
+        try:
+            val = float(t)
+
+            if val < 0.0:
+                val = 0.0
+            if val > 1.0:
+                val = 1.0
+            return val
+        except ValueError:
+            pass
+
+        m = re.search(r"([01](?:\.\d+)?)", t)
+        if m:
+            try:
+                val = float(m.group(1))
+                if val < 0.0:
+                    val = 0.0
+                if val > 1.0:
+                    val = 1.0
+                return val
+            except ValueError:
+                pass
+
+        t_up = t.upper()
+        if "CORRECT" in t_up and "INCORRECT" not in t_up:
+            return 1.0
+        if "INCORRECT" in t_up:
+            return 0.0
+
+        return 0.0
 
     def eval_result(
         self, results: List[Dict[str, Any]], eval_method: str = "model"
     ) -> Tuple[float, Dict[str, Any]]:
+        """
+        把每个样本的 score（0~1 小数或 0/1）做平均，
+        同时按 type 统计 per-type 的平均分。
+        """
 
-        total = 0
-        correct = 0
-        failed = 0
+        total = 0                 
+        sum_score = 0.0         
+        failed = 0              
 
-        type_total: Dict[str, int] = {}
-        type_correct: Dict[str, int] = {}
-        type_failed: Dict[str, int] = {}
+        per_type_sum: Dict[str, float] = {}
+        per_type_count: Dict[str, int] = {}
+        per_type_failed: Dict[str, int] = {}
 
         for idx, item in enumerate(results):
             j = item.get("judge_input")
@@ -117,70 +152,62 @@ Do not output anything else.
                 print(f"[WildVideo judge] sample {idx} has no judge_input, skip.")
                 continue
 
-            q_type = j.get("type", "Unknown")
+            q_type = j.get("type") or "Unknown"
 
             prompt = self.build_prompt(j)
 
+            score = 0.0
+            ok = True
             try:
                 raw = self._call_judge_model_with_retry(prompt)
-                score = self._output_to_score(raw)
+                score = float(self._output_to_score(raw))
             except Exception as e:
+                ok = False
+                failed += 1
                 print(
                     f"[WildVideo judge] sample {idx} FAILED, "
-                    f"treat as incorrect. Error = {e}"
+                    f"treat as score=0. Error = {e}"
                 )
-                failed += 1
-                total += 1
-
-                type_total[q_type] = type_total.get(q_type, 0) + 1
-                type_failed[q_type] = type_failed.get(q_type, 0) + 1
-                continue
 
             total += 1
-            correct += score
+            sum_score += score
 
-            type_total[q_type] = type_total.get(q_type, 0) + 1
-            if score == 1:
-                type_correct[q_type] = type_correct.get(q_type, 0) + 1
+            per_type_sum[q_type] = per_type_sum.get(q_type, 0.0) + score
+            per_type_count[q_type] = per_type_count.get(q_type, 0) + 1
+            if not ok:
+                per_type_failed[q_type] = per_type_failed.get(q_type, 0) + 1
 
             time.sleep(0.1)
 
-        overall_acc = correct / total if total > 0 else 0.0
+        overall_acc = sum_score / total if total > 0 else 0.0
 
-        per_type_acc = {
-            t: (type_correct.get(t, 0) / type_total[t]) if type_total[t] > 0 else 0.0
-            for t in type_total
-        }
-
-        per_type_detail = {
-            t: {
-                "total": type_total.get(t, 0),
-                "correct": type_correct.get(t, 0),
-                "failed": type_failed.get(t, 0),
+        per_type_acc: Dict[str, float] = {}
+        per_type_detail: Dict[str, Any] = {}
+        for t, s in per_type_sum.items():
+            cnt = per_type_count.get(t, 0)
+            if cnt == 0:
+                continue
+            avg = s / cnt
+            per_type_acc[t] = avg
+            per_type_detail[t] = {
+                "total": cnt,
+                "failed": per_type_failed.get(t, 0),
+                "avg_score": avg,
+                "sum_score": s,
             }
-            for t in type_total
-        }
 
         extra_stats: Dict[str, Any] = {
             "total_judged": total,
-            "correct_judged": correct,
+            "sum_score": sum_score,  
             "failed_judged": failed,
-            "acc_raw": overall_acc,
+            "acc_raw": overall_acc, 
             "per_type_acc": per_type_acc,
             "per_type_detail": per_type_detail,
         }
 
         print(
-            f"[WildVideo judge] total={total}, correct={correct}, "
+            f"[WildVideo judge] total={total}, sum_score={sum_score:.4f}, "
             f"failed={failed}, overall_acc={overall_acc:.4f}"
         )
-        print("[WildVideo judge] per-type accuracy:")
-        for t, acc in per_type_acc.items():
-            print(
-                f"  {t}: {acc:.4f} "
-                f"(correct={type_correct.get(t, 0)}, "
-                f"total={type_total.get(t, 0)}, "
-                f"failed={type_failed.get(t, 0)})"
-            )
 
         return overall_acc, extra_stats
