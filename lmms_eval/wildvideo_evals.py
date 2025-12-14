@@ -107,11 +107,17 @@ Do not output anything else.
         correct = 0
         failed = 0
 
+        type_total: Dict[str, int] = {}
+        type_correct: Dict[str, int] = {}
+        type_failed: Dict[str, int] = {}
+
         for idx, item in enumerate(results):
             j = item.get("judge_input")
             if j is None:
                 print(f"[WildVideo judge] sample {idx} has no judge_input, skip.")
                 continue
+
+            q_type = j.get("type", "Unknown")
 
             prompt = self.build_prompt(j)
 
@@ -125,23 +131,56 @@ Do not output anything else.
                 )
                 failed += 1
                 total += 1
+
+                type_total[q_type] = type_total.get(q_type, 0) + 1
+                type_failed[q_type] = type_failed.get(q_type, 0) + 1
                 continue
 
             total += 1
             correct += score
+
+            type_total[q_type] = type_total.get(q_type, 0) + 1
+            if score == 1:
+                type_correct[q_type] = type_correct.get(q_type, 0) + 1
+
             time.sleep(0.1)
 
         overall_acc = correct / total if total > 0 else 0.0
+
+        per_type_acc = {
+            t: (type_correct.get(t, 0) / type_total[t]) if type_total[t] > 0 else 0.0
+            for t in type_total
+        }
+
+        per_type_detail = {
+            t: {
+                "total": type_total.get(t, 0),
+                "correct": type_correct.get(t, 0),
+                "failed": type_failed.get(t, 0),
+            }
+            for t in type_total
+        }
+
         extra_stats: Dict[str, Any] = {
             "total_judged": total,
             "correct_judged": correct,
             "failed_judged": failed,
             "acc_raw": overall_acc,
+            "per_type_acc": per_type_acc,
+            "per_type_detail": per_type_detail,
         }
 
         print(
             f"[WildVideo judge] total={total}, correct={correct}, "
             f"failed={failed}, overall_acc={overall_acc:.4f}"
         )
+        print("[WildVideo judge] per-type accuracy:")
+        for t, acc in per_type_acc.items():
+            print(
+                f"  {t}: {acc:.4f} "
+                f"(correct={type_correct.get(t, 0)}, "
+                f"total={type_total.get(t, 0)}, "
+                f"failed={type_failed.get(t, 0)})"
+            )
 
         return overall_acc, extra_stats
