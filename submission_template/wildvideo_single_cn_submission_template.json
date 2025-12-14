@@ -24,10 +24,10 @@
   },
 
   "extra_stats": {
-    "total_judged": 0,
-    "correct_judged": 0,
-    "failed_judged": 0,
-    "acc_raw": 0.0000
+    "total_judged": X,
+    "correct_judged": X,
+    "failed_judged": X,
+    "acc_raw": X
   },
 
   "run_meta": {
