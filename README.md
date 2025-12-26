@@ -124,6 +124,9 @@ You can find templates under `submission_template/`, for example:
 - `submission_template/wildvideo_single_cn_template.json`
 - `submission_template/wildvideo_multi_cn_template.json`
 
+### 3. To submit your results to the leaderboard, please send to yangsongyuan@nudt.edu.cn with your result json files.
+
+
 
 ## Citation
 
